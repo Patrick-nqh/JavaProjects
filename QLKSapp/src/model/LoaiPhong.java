@@ -41,4 +41,13 @@ public class LoaiPhong {
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
     }
+
+    @Override
+    public String toString() {
+        return "LoaiPhong{" +
+                "maLoai=" + maLoai +
+                ", tenLoai='" + tenLoai + '\'' +
+                ", ghiChu='" + ghiChu + '\'' +
+                '}';
+    }
 }

@@ -61,4 +61,16 @@ public class ThanhToan {
     public void setNgayThanhToan(Date ngayThanhToan) {
         this.ngayThanhToan = ngayThanhToan;
     }
+
+    @Override
+    public String toString() {
+        return "ThanhToan{" +
+                "Ten khach hang"+ thuePhong.getKhachHang().getTenKH()+
+                "thanhTien=" + thanhTien +
+                ", hinhThucThanhToan='" + hinhThucThanhToan + '\'' +
+                ", ghiChu='" + ghiChu + '\'' +
+                ", ngayThanhToan=" + ngayThanhToan +
+                ", thuePhong=" + thuePhong +
+                '}';
+    }
 }

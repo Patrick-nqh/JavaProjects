@@ -1,14 +1,15 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ThuePhong {
+    public static int id = 200;
     private int maThue ;
-    private static int id = 200;
     private KhachHang khachHang;
     private Phong phong;
-    private Date ngayVao;
-    private Date ngayRa;
+    private String ngayVao;
+    private String ngayRa;
     private int datCoc;
 
     public ThuePhong() {
@@ -18,8 +19,10 @@ public class ThuePhong {
         this.maThue = maThue;
     }
 
+
+
     public ThuePhong(int maThue, KhachHang khachHang, Phong phong
-            , Date ngayVao, Date ngayRa, int datCoc) {
+            , String ngayVao, String ngayRa, int datCoc) {
         this.khachHang = khachHang;
         this.phong = phong;
         this.ngayVao = ngayVao;
@@ -60,19 +63,19 @@ public class ThuePhong {
         this.phong = phong;
     }
 
-    public Date getNgayVao() {
+    public String getNgayVao() {
         return ngayVao;
     }
 
-    public void setNgayVao(Date ngayVao) {
+    public void setNgayVao(String ngayVao) {
         this.ngayVao = ngayVao;
     }
 
-    public Date getNgayRa() {
+    public String getNgayRa() {
         return ngayRa;
     }
 
-    public void setNgayRa(Date ngayRa) {
+    public void setNgayRa(String ngayRa) {
         this.ngayRa = ngayRa;
     }
 
@@ -84,13 +87,14 @@ public class ThuePhong {
         this.datCoc = datCoc;
     }
 
+    SimpleDateFormat time = new SimpleDateFormat("YYYY-MM-dd");
     @Override
     public String toString() {
         return "ThuePhong{" +
                 "maThue=" + maThue +
                 ", maKhachHang=" + khachHang.getMaKH() +
                 ", maPhong=" + phong.getMaPhong() +
-                ", ngayVao=" + ngayVao +
+                ", ngayVao=" + time.format(ngayVao) +//test thu
                 ", ngayRa=" + ngayRa +
                 ", datCoc=" + datCoc +
                 '}';

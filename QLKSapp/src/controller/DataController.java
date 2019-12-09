@@ -94,9 +94,9 @@ public class DataController {
 //        printWriter.println(phong.getMaPhong()+"|"+phong.getTenPhong()+"|"
 //                +phong.getLoaiPhong().getMaLoai()+"|"
 //                +phong.getDienTich()+"|"+phong.getGiaThue());
-        Phong phong = new Phong(Integer.parseInt(datas[0]),datas[1]
-                , new LoaiPhong(Integer.parseInt(datas[2]))
-                , Integer.parseInt(datas[3]),Integer.parseInt(datas[4]));
+        Phong phong = new Phong(Integer.parseInt(datas[0])
+                , new LoaiPhong(Integer.parseInt(datas[1]))
+                , Integer.parseInt(datas[2]),Integer.parseInt(datas[3]));
         return phong;
     }
     public ArrayList<LoaiPhong> readLoaiPhongFromFile(String fileName) throws IOException {
@@ -143,8 +143,8 @@ public class DataController {
         ThuePhong thuePhong = new ThuePhong(Integer.parseInt(datas[0])
                 , new KhachHang(Integer.parseInt(datas[1]))
                 , new Phong(Integer.parseInt(datas[2]))
-                , new SimpleDateFormat("dd/mm/yyyy").parse(datas[3])
-                , new SimpleDateFormat("dd/mm/yyyy").parse(datas[4])
+                , datas[3]
+                , datas[4]
                 , Integer.parseInt(datas[5]));
         return thuePhong;
     }
@@ -175,9 +175,6 @@ public class DataController {
                 ,new SimpleDateFormat("dd/mm/yyyy").parse(datas[4]));
         return thanhToan;
     }
-
-
-
 
 
 
@@ -217,9 +214,11 @@ public class DataController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printWriter.println(phong.getMaPhong()+"|"+phong.getTenPhong()+"|"
+        printWriter.println(phong.getMaPhong()+"|"
                 +phong.getLoaiPhong().getMaLoai()+"|"
-                +phong.getDienTich()+"|"+phong.getGiaThue());
+                +phong.getDienTich()+"|"+phong.getGiaThue()
+                +"|"+phong.getTrangThai()
+                );
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
@@ -256,5 +255,20 @@ public class DataController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void updateThuePhongFile(ArrayList<ThuePhong> list, String fileName) throws IOException {
+        //xoa bo file cu
+        File file = new File(fileName);
+        if(file.exists()){
+            file.delete(); //xoa bo file;
+        }
+        // ghi lai file moi
+       openFileToWrite(fileName);
+        for ( ThuePhong thue : list) {
+            printWriter.println(thue.getMaThue()+"|"+thue.getKhachHang().getMaKH()+"|"
+                    +thue.getPhong().getMaPhong()+"|" +thue.getNgayVao()
+                    +"|"+thue.getNgayRa()+"|"+thue.getDatCoc());
+        }
+        closeFileAfterWrite(fileName);
     }
 }

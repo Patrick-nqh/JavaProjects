@@ -1,11 +1,11 @@
 package model;
 
-public class Phong {
+public class Phong extends LoaiPhong{
     private int maPhong;
-    private String tenPhong;
     private LoaiPhong loaiPhong;
     private int dienTich;
     private int giaThue;
+    private String trangThai = "dang trong";
 
     public Phong() {
     }
@@ -14,9 +14,12 @@ public class Phong {
         this.maPhong = maPhong;
     }
 
-    public Phong(int maPhong, String tenPhong, LoaiPhong loaiPhong, int dienTich, int giaThue) {
+    public Phong(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public Phong(int maPhong, LoaiPhong loaiPhong, int dienTich, int giaThue) {
         this.maPhong = maPhong;
-        this.tenPhong = tenPhong;
         this.loaiPhong = loaiPhong;
         this.dienTich = dienTich;
         this.giaThue = giaThue;
@@ -28,14 +31,6 @@ public class Phong {
 
     public void setMaPhong(int maPhong) {
         this.maPhong = maPhong;
-    }
-
-    public String getTenPhong() {
-        return tenPhong;
-    }
-
-    public void setTenPhong(String tenPhong) {
-        this.tenPhong = tenPhong;
     }
 
     public LoaiPhong getLoaiPhong() {
@@ -60,6 +55,27 @@ public class Phong {
 
     public void setGiaThue(int giaThue) {
         this.giaThue = giaThue;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Phong{" +
+                "maPhong=" + maPhong +
+                ", maLoaiPhong=" + loaiPhong.getMaLoai() +
+                ", dienTich=" + dienTich +
+                ", giaThue=" + giaThue +
+                ", trangThai='" + trangThai + '\'' +
+                '}';
     }
 }
 
