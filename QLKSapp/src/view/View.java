@@ -4,10 +4,7 @@ import com.sun.javaws.util.JfxHelper;
 import controller.ControllerUltility;
 import controller.DataController;
 import jdk.nashorn.internal.ir.CallNode;
-import model.KhachHang;
-import model.LoaiPhong;
-import model.Phong;
-import model.ThuePhong;
+import model.*;
 
 import javax.lang.model.element.VariableElement;
 import java.io.IOException;
@@ -24,6 +21,7 @@ public class View {
         String thuePhongFileName = "ThuePhong.txt";
         String phongFileName = "Phong.txt";
         String loaiPhongFileName = "LoaiPhong.txt";
+        String thanhToanFileName = "ThanhToan.txt";
 
         DataController controller = new DataController();
         ControllerUltility ultility = new ControllerUltility();// khoi tao ultility
@@ -32,6 +30,9 @@ public class View {
         ArrayList<ThuePhong> thuePhongs = new ArrayList<>();
         ArrayList<Phong> phongs = new ArrayList<>();
         ArrayList<LoaiPhong> loaiPhongs = new ArrayList<>();
+
+        KhachHang currentKhachHang = new KhachHang();
+        Phong currentPhong = new Phong();
 
         boolean isKhChecked = false;
         boolean isThuePhongChecked = false;
@@ -48,6 +49,7 @@ public class View {
             System.out.println("5. Them loai phong vao trong file ");
             System.out.println("6. Hien thi danh sach loai phong co trong file ");
             System.out.println("7. Dat phong ");
+            System.out.println("8. Tra phong ");
             System.out.println("0. Thoat khoi ung dung");
             System.out.println("-------------------------------------------------------");
             System.out.println("Hay chon mot trong cac tuy chon tren! ");
@@ -171,13 +173,19 @@ public class View {
                         do {
                             System.out.println("Nhap ma phong muon thue ");
                             maPhong = scanner.nextInt();
+                            scanner.nextLine();
                             ttPhong = checkPhongExist(maPhong, phongs);
                         }while (!ttPhong == true);
                        System.out.println("---------------Ma phong hop le-------------------- ");
                    }while(false);
+                   currentKhachHang = getKhachHang(khachHangs, maKh);
+                   currentPhong = getPhong(phongs, maPhong);
+
+                   phongs = ultility.updatePhong(phongs, currentPhong, maPhong);
+                   controller.updatePhongFile(phongs, phongFileName);
 
                    System.out.println("Nhap ngay vao: ");
-                  dayIn = scanner.nextLine();
+                   dayIn = scanner.nextLine();
 
                    System.out.println("Nhap ngay ra: ");
                    dayOut = scanner.nextLine();
@@ -187,17 +195,72 @@ public class View {
 
 //                   public ThuePhong(int maThue, KhachHang khachHang, Phong phong
     //                   , Date ngayVao, Date ngayRa, int datCoc)
-                   KhachHang currentKhachHang = getKhachHang(khachHangs, maKh);
-                   Phong currentPhong = getPhong(phongs, maPhong);
+
+
                    ThuePhong thuePhong = new ThuePhong(0, currentKhachHang
                            , currentPhong, dayIn, dayOut, datCoc );
+
+                   //cap nhat danh sach thue phong
+                   thuePhongs = ultility.updateThuePhong(thuePhongs, thuePhong);
+//                   controller.updateThuePhongFile(thuePhongs, thuePhongFileName);
+                   //cap nhap file
                    controller.writeThuePhongToFile(thuePhong, thuePhongFileName);
 // update
-                   thuePhongs = ultility.updateThuePhong(thuePhongs, thuePhong);//cap nhat danh sach thue phong
-                   controller.updateThuePhongFile(thuePhongs, thuePhongFileName);//cap nhap file
+                   break;
+               case 8:
+                   thuePhongs = controller.readThuePhongFromFile(thuePhongFileName);
+//                   public ThanhToan(ThuePhong thuePhong
+//                       ,int thanhTien, String hinhThucThanhToan
+//                       , String ghiChu, Date ngayThanhToan)
+                   int thanhTien, maThue, soHT;
+                   String  hinhThucThanhToan;
+                   Date ngayThanhToan;
+                   boolean ttThue = false;
+                   String[] hinhThuc = {"1.ATM","2.Tien mat"};
+
+                   do {
+                       System.out.println("Nhap ma thue phong hoac 0 de bo qua ");
+                       maThue = scanner.nextInt();
+                       if (maThue == 0){
+                           break;//tat ca khach hang da thue phong//bo qua
+                       }
+                       ttThue = checkThueExist(maThue, thuePhongs);
+                   }while (!ttThue == true);
+                   System.out.println("--------------- Ma thue hop le -------------------- ");
+                   ThuePhong currentThuePhong = getThuePhong(thuePhongs, maThue);
+
+                   tenKH = currentThuePhong.getKhachHang().getTenKH();
+
+                   thanhTien = currentThuePhong.getPhong().getGiaThue();
+
+                   do {
+                       System.out.println("Nhap hinh thuc thanh toan: ");
+                       System.out.println("1.ATM\n2.Tien mat");
+                       soHT = scanner.nextInt();
+                       hinhThucThanhToan = hinhThuc[soHT-1];
+                   }while (soHT < 1 || soHT > 2);
+
+                   System.out.println("Nhap ghi chu ");
+                   ghiChu = scanner.nextLine();
+
+                   java.util.Date date = new java.util.Date();
+                   ngayThanhToan = date;
+
+                   ThanhToan thanhToan = new ThanhToan(currentThuePhong, thanhTien
+                           , hinhThucThanhToan, ghiChu, ngayThanhToan);
+                   controller.writeThanhToanToFile(thanhToan, thanhToanFileName);
                    break;
            }
         }while (choise != 0);
+    }
+
+    private static boolean checkThueExist(int maThue, ArrayList<ThuePhong> thuePhongs) {
+        for(int i = 0 ; i < thuePhongs.size() ; i++){
+            if (maThue == thuePhongs.get(i).getMaThue()){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void checkThuePhongId(DataController controller, String fileName) throws IOException, ParseException {
@@ -230,7 +293,7 @@ public class View {
         for (LoaiPhong k: loaiPhongs) {
             System.out.println(k);
         }
-    }
+}
 
     private static boolean checkKhExist(int maKh, ArrayList<KhachHang> khachHangs) {
         for(int i = 0 ; i < khachHangs.size() ; i++){
@@ -278,6 +341,14 @@ public class View {
         for (int i = 0; i < loaiPhongs.size(); i++){
             if(loaiPhongs.get(i).getMaLoai() == maLoai){
                 return loaiPhongs.get(i);
+            }
+        }
+        return null;
+    }
+    private static ThuePhong getThuePhong (ArrayList<ThuePhong> thuePhongs, int maThue){
+        for (int i = 0; i < thuePhongs.size(); i++){
+            if(thuePhongs.get(i).getMaThue() == maThue){
+                return thuePhongs.get(i);
             }
         }
         return null;

@@ -14,39 +14,44 @@ public class DataController {
     private BufferedWriter bufferedWriter;
     private PrintWriter printWriter;
     private Scanner scanner;
-//file to write
+
+    //file to write
     public void openFileToWrite(String fileName) throws IOException {
         File file;
         fileWriter = new FileWriter(fileName, true);
         bufferedWriter = new BufferedWriter(fileWriter);
         printWriter = new PrintWriter(bufferedWriter);
     }
+
     public void closeFileAfterWrite(String fileName) throws IOException {
         printWriter.close();
         bufferedWriter.close();
         fileWriter.close();
     }
-//file to read
+
+    //file to read
     public void openFileToRead(String fileName) throws IOException {
         File file = new File(fileName);
-        if (!file.exists()){
+        if (!file.exists()) {
             file.createNewFile();
         }
         //tao file trong truong hop file ko ton tai
         try {
-            scanner = new Scanner(Paths.get(fileName),"UTF-8");
-        }catch (Exception e){
+            scanner = new Scanner(Paths.get(fileName), "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void closeFileAfterRead(String fileName){
-        try{
+
+    public void closeFileAfterRead(String fileName) {
+        try {
             scanner.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-//    doc file
+
+    //    doc file
     //doc thong tin khach hang tu file --> chuyen thanh doi tuong khach hang
     //                                 --> them vao danh sach cac khach hang
     //                                 --> tra ve danh sach cac khach hang
@@ -54,7 +59,7 @@ public class DataController {
         openFileToRead(fileName);
         //tao danh sach chua thong tin cua mot tap cac doi tuong
         ArrayList<KhachHang> khachHangs = new ArrayList<>();
-        while (scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             //doc du lieu tu file
             String data = scanner.nextLine();
             //chuyen doi du lieu thanh doi tuong
@@ -76,10 +81,11 @@ public class DataController {
                 , datas[3]);
         return khachHang;
     }
+
     public ArrayList<Phong> readPhongFromFile(String fileName) throws IOException {
         openFileToRead(fileName);
         ArrayList<Phong> phongs = new ArrayList<>();
-        while (scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             Phong phong = createPhongFromData(data);
             phongs.add(phong);
@@ -87,7 +93,8 @@ public class DataController {
         closeFileAfterRead(fileName);
         return phongs;
     }
-    public Phong createPhongFromData(String data){
+
+    public Phong createPhongFromData(String data) {
         String[] datas = data.split("\\|");
 //        public Phong(int maPhong, String tenPhong
 //        , LoaiPhong loaiPhong, int dienTich, int giaThue)
@@ -96,13 +103,14 @@ public class DataController {
 //                +phong.getDienTich()+"|"+phong.getGiaThue());
         Phong phong = new Phong(Integer.parseInt(datas[0])
                 , new LoaiPhong(Integer.parseInt(datas[1]))
-                , Integer.parseInt(datas[2]),Integer.parseInt(datas[3]));
+                , Integer.parseInt(datas[2]), Integer.parseInt(datas[3]));
         return phong;
     }
+
     public ArrayList<LoaiPhong> readLoaiPhongFromFile(String fileName) throws IOException {
         openFileToRead(fileName);
         ArrayList<LoaiPhong> loaiPhongs = new ArrayList<>();
-        while (scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             LoaiPhong loaiPhong = createLoaiPhongFromData(data);
             loaiPhongs.add(loaiPhong);
@@ -110,20 +118,21 @@ public class DataController {
         closeFileAfterRead(fileName);
         return loaiPhongs;
     }
-    public LoaiPhong createLoaiPhongFromData(String data){
+
+    public LoaiPhong createLoaiPhongFromData(String data) {
         String[] datas = data.split("\\|");
 //        public LoaiPhong(int maLoai, String tenLoai, String ghiChu)
 //        printWriter.println(loaiPhong.getMaLoai()+"|"+loaiPhong.getTenLoai()+"|"
 //                +loaiPhong.getGhiChu());
         LoaiPhong loaiPhong = new LoaiPhong(Integer.parseInt(datas[0])
-                ,datas[1],datas[2]);
+                , datas[1], datas[2]);
         return loaiPhong;
     }
 
     public ArrayList<ThuePhong> readThuePhongFromFile(String fileName) throws ParseException, IOException {
         openFileToRead(fileName);
         ArrayList<ThuePhong> thuePhongs = new ArrayList<>();
-        while (scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             ThuePhong thuePhong = createThuePhongFromData(data);
             thuePhongs.add(thuePhong);
@@ -131,6 +140,7 @@ public class DataController {
         closeFileAfterRead(fileName);
         return thuePhongs;
     }
+
     public ThuePhong createThuePhongFromData(String data) throws ParseException {
         String[] datas = data.split("\\|");
 //        public ThuePhong(int maThue, KhachHang khachHang, Phong phong
@@ -148,10 +158,11 @@ public class DataController {
                 , Integer.parseInt(datas[5]));
         return thuePhong;
     }
+
     public ArrayList<ThanhToan> readThanhToanFromFile(String fileName) throws ParseException, IOException {
         openFileToRead(fileName);
         ArrayList<ThanhToan> thanhToans = new ArrayList<>();
-        while (scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             ThanhToan thanhToan = createThanhToanFromData(data);
             thanhToans.add(thanhToan);
@@ -159,6 +170,7 @@ public class DataController {
         closeFileAfterRead(fileName);
         return thanhToans;
     }
+
     public ThanhToan createThanhToanFromData(String data) throws ParseException {
         String[] datas = data.split("\\|");
 //        public ThanhToan(ThuePhong thuePhong
@@ -170,105 +182,127 @@ public class DataController {
 //                +"|"+thanhToan.getGhiChu()
 //                +"|"+thanhToan.getNgayThanhToan());
         ThanhToan thanhToan = new ThanhToan(new ThuePhong(new KhachHang(Integer.parseInt(datas[0])))
-                ,Integer.parseInt(datas[1])
-                ,datas[2],datas[3]
-                ,new SimpleDateFormat("dd/mm/yyyy").parse(datas[4]));
+                , Integer.parseInt(datas[1])
+                , datas[2], datas[3]
+                , new SimpleDateFormat("dd/mm/yyyy").parse(datas[4]));
         return thanhToan;
     }
 
 
-
     //    ghi file
-    public  void writeKhachHangToFile(KhachHang khachHang, String fileName){
+    public void writeKhachHangToFile(KhachHang khachHang, String fileName) {
         try {
             openFileToWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printWriter.println(khachHang.getMaKH()+"|"+khachHang.getTenKH()+"|"
-                +khachHang.getSoCMND()+"|"+khachHang.getSdt());
+        printWriter.println(khachHang.getMaKH() + "|" + khachHang.getTenKH() + "|"
+                + khachHang.getSoCMND() + "|" + khachHang.getSdt());
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void writeThuePhongToFile(ThuePhong thuePhong, String fileName){
+
+    public void writeThuePhongToFile(ThuePhong thuePhong, String fileName) {
         try {
             openFileToWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printWriter.println(thuePhong.getMaThue()+"|"+thuePhong.getKhachHang().getMaKH()+"|"
-                +thuePhong.getPhong().getMaPhong()+"|" +thuePhong.getNgayVao()
-                +"|"+thuePhong.getNgayRa()+"|"+thuePhong.getDatCoc());
+        printWriter.println(thuePhong.getMaThue() + "|" + thuePhong.getKhachHang().getMaKH() + "|"
+                + thuePhong.getPhong().getMaPhong() + "|" + thuePhong.getNgayVao()
+                + "|" + thuePhong.getNgayRa() + "|" + thuePhong.getDatCoc());
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public   void writePhongToFile(Phong phong, String fileName){
+
+    public void writePhongToFile(Phong phong, String fileName) {
         try {
             openFileToWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printWriter.println(phong.getMaPhong()+"|"
-                +phong.getLoaiPhong().getMaLoai()+"|"
-                +phong.getDienTich()+"|"+phong.getGiaThue()
-                +"|"+phong.getTrangThai()
-                );
+        printWriter.println(phong.getMaPhong() + "|"
+                + phong.getLoaiPhong().getMaLoai() + "|"
+                + phong.getDienTich() + "|" + phong.getGiaThue()
+                + "|" + phong.getTrangThai()
+        );
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void writeLoaiPhongToFile(LoaiPhong loaiPhong, String fileName){
+
+    public void writeLoaiPhongToFile(LoaiPhong loaiPhong, String fileName) {
         try {
             openFileToWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printWriter.println(loaiPhong.getMaLoai()+"|"+loaiPhong.getTenLoai()+"|"
-                +loaiPhong.getGhiChu());
+        printWriter.println(loaiPhong.getMaLoai() + "|" + loaiPhong.getTenLoai() + "|"
+                + loaiPhong.getGhiChu());
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void writeThanhToanToFile(ThanhToan thanhToan, String fileName){
+
+    public void writeThanhToanToFile(ThanhToan thanhToan, String fileName) {
         try {
             openFileToWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
         printWriter.println(thanhToan.getThuePhong().getKhachHang().getMaKH()
-                +"|"+thanhToan.getThanhTien()
-                +"|" +thanhToan.getHinhThucThanhToan()
-                +"|"+thanhToan.getGhiChu()
-                +"|"+thanhToan.getNgayThanhToan());
+                + "|" + thanhToan.getThanhTien()
+                + "|" + thanhToan.getHinhThucThanhToan()
+                + "|" + thanhToan.getGhiChu()
+                + "|" + thanhToan.getNgayThanhToan());
         try {
             closeFileAfterWrite(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void updateThuePhongFile(ArrayList<ThuePhong> list, String fileName) throws IOException {
+
+    public void updateThuePhongFile(ArrayList<ThuePhong> thuePhongs, String fileName) throws IOException {
         //xoa bo file cu
         File file = new File(fileName);
-        if(file.exists()){
+        if (file.exists()) {
             file.delete(); //xoa bo file;
         }
         // ghi lai file moi
-       openFileToWrite(fileName);
-        for ( ThuePhong thue : list) {
-            printWriter.println(thue.getMaThue()+"|"+thue.getKhachHang().getMaKH()+"|"
-                    +thue.getPhong().getMaPhong()+"|" +thue.getNgayVao()
-                    +"|"+thue.getNgayRa()+"|"+thue.getDatCoc());
+        openFileToWrite(fileName);
+        for (ThuePhong k : thuePhongs) {
+            printWriter.println(k.getMaThue() + "|" + k.getKhachHang().getMaKH() + "|"
+                    + k.getPhong().getMaPhong() + "|" + k.getNgayVao()
+                    + "|" + k.getNgayRa() + "|" + k.getDatCoc());
+        }
+        closeFileAfterWrite(fileName);
+    }
+
+    public void updatePhongFile(ArrayList<Phong> phongs, String fileName) throws IOException {
+        File file = new File(fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        openFileToWrite(fileName);
+        for (Phong k : phongs) {
+            printWriter.println(k.getMaPhong() + "|"
+                    + k.getLoaiPhong().getMaLoai() + "|"
+                    + k.getDienTich() + "|" + k.getGiaThue()
+                    + "|" + k.getTrangThai()
+            );
         }
         closeFileAfterWrite(fileName);
     }
 }
+
+
