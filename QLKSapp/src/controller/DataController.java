@@ -129,9 +129,11 @@ public class DataController {
         return loaiPhong;
     }
 
-    public ArrayList<ThuePhong> readThuePhongFromFile(String fileName) throws ParseException, IOException {
+    public ArrayList<ThuePhong> readThuePhongFromFile(String fileName) throws IOException {
         openFileToRead(fileName);
         ArrayList<ThuePhong> thuePhongs = new ArrayList<>();
+//        public ThuePhong(int maThue, KhachHang khachHang, Phong phong
+//                , String ngayVao, String ngayRa, int datCoc)
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             ThuePhong thuePhong = createThuePhongFromData(data);
@@ -141,18 +143,17 @@ public class DataController {
         return thuePhongs;
     }
 
-    public ThuePhong createThuePhongFromData(String data) throws ParseException {
+
+    public ThuePhong createThuePhongFromData(String data)  {
         String[] datas = data.split("\\|");
 //        public ThuePhong(int maThue, KhachHang khachHang, Phong phong
 //                , Date ngayVao, Date ngayRa, int datCoc)
 
-//        printWriter.println(thuePhong.getMaThue()+"|"+thuePhong.getKhachHang().getMaKH()+"|"
-//                +thuePhong.getPhong().getMaPhong()+"|" +thuePhong.getNgayVao()
-//                +"|"+thuePhong.getNgayRa()+"|"+thuePhong.getDatCoc());
+//
 
         ThuePhong thuePhong = new ThuePhong(Integer.parseInt(datas[0])
                 , new KhachHang(Integer.parseInt(datas[1]))
-                , new Phong(Integer.parseInt(datas[2]))
+                , new Phong(Integer.parseInt(datas[2]))//overload contructor
                 , datas[3]
                 , datas[4]
                 , Integer.parseInt(datas[5]));

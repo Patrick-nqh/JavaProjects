@@ -94,7 +94,7 @@ public class ThuePhong {
                 "maThue=" + maThue +
                 ", maKhachHang=" + khachHang.getMaKH() +
                 ", maPhong=" + phong.getMaPhong() +
-                ", ngayVao=" + time.format(ngayVao) +//test thu
+                ", ngayVao=" + ngayVao +//test thu
                 ", ngayRa=" + ngayRa +
                 ", datCoc=" + datCoc +
                 '}';

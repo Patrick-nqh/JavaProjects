@@ -1,2 +1,2 @@
-001|222|333
-002|222|2222||2
+201|phong 2 nguoi|nothing
+202|phong 2 giuong|ko on ao qua 12 gio
